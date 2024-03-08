@@ -14,7 +14,7 @@ mail = Mail(app)
 invoice_email_list = []
 
 
-@app.route('/email_list', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def emails():
     if request.method == 'GET':
         if len(invoice_email_list) > 0:
@@ -43,43 +43,6 @@ def emails():
         msg.body = f"Hello {new_name}. Your total for order number {new_id} is {new_total}. Thank you."
         mail.send(msg)
         return jsonify(invoice_email_list), 201 , 'Email delivered successfully'
-
-
-@app.route('/email_list/<int:input_id>', methods=['GET', 'PUT', 'DELETE'])
-def email_function(input_id):
-
-    if request.method == 'GET':
-        for item in invoice_email_list:
-            if item['order_number'] == input_id:
-                return jsonify(item), 201
-        return 'Nothing Found', 404
-
-    if request.method == 'PUT':
-        for item in invoice_email_list:
-            if item['order_number'] == input_id:
-                item['order_email'] = request.form['order_email']
-                item['order_name'] = request.form['order_name']
-                item['order_total'] = request.form['order_total']
-                new_entry = {
-                    'order_number': item['order_number'],
-                    'order_email': item['order_email'],
-                    'order_name': item['order_name'],
-                    'order_total': item['order_total']
-                }
-
-                return jsonify(new_entry), 201
-        return 'Order number not found'
-
-    if request.method == 'DELETE':
-
-        if len(invoice_email_list) == 0:
-            return 'No orders available'
-
-        for index, item in enumerate(invoice_email_list):
-            if item['order_number'] == input_id:
-                invoice_email_list.pop(index)
-                return jsonify(invoice_email_list), 201
-        return 'Order number not found'
 
 
 if __name__ == '__main__':
