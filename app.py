@@ -10,7 +10,6 @@ app.config['MAIL_PASSWORD'] = 'enter email password'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
-
 invoice_email_list = []
 
 
@@ -39,10 +38,10 @@ def emails():
         }
 
         invoice_email_list.append(new_entry)
-        msg = Message("Test", sender='enter your own email', recipients=[new_email])
+        msg = Message("Test", sender='k76922045@gmail.com', recipients=[new_email])
         msg.body = f"Hello {new_name}. Your total for order number {new_id} is {new_total}. Thank you."
         mail.send(msg)
-        return jsonify(invoice_email_list), 201 , 'Email delivered successfully'
+        return 'Email Sent Successfully'
 
 
 if __name__ == '__main__':
